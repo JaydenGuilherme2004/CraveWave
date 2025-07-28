@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CraveWave</title>
+  <link href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" rel="stylesheet" />
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <ion-app>
+    <!-- Header -->
+    <ion-header class="modern-header">
+      <ion-toolbar color="primary">
+        <ion-title class="app-title">
+          <div class="logo-container">
+            <ion-icon name="restaurant" class="logo-icon"></ion-icon>
+            <span class="app-name">CraveWave</span>
+          </div>
+          <p class="app-subtitle">Meals that match your mood</p>
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button id="favoritesBtn" class="favorites-button">
+            <ion-icon name="heart" slot="icon-only"></ion-icon>
+            <ion-badge class="favorites-badge" id="favoritesBadge">0</ion-badge>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      
+      <!-- Search Bar -->
+      <ion-toolbar color="primary">
+        <ion-searchbar 
+          id="searchBar" 
+          placeholder="Search meals..." 
+          show-clear-button="focus"
+          class="modern-searchbar">
+        </ion-searchbar>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="main-content">
+      <!-- Mood Selection Cards -->
+      <div class="content-section">
+        <h2 class="section-title">How are you feeling today?</h2>
+        <div class="mood-grid">
+          <ion-card class="mood-card" data-mood="happy">
+            <ion-card-content class="mood-content">
+              <div class="mood-emoji">😊</div>
+              <ion-card-title class="mood-title">Happy</ion-card-title>
+              <p class="mood-description">Light & refreshing meals</p>
+            </ion-card-content>
+          </ion-card>
+          
+          <ion-card class="mood-card" data-mood="sad">
+            <ion-card-content class="mood-content">
+              <div class="mood-emoji">😔</div>
+              <ion-card-title class="mood-title">Comfort</ion-card-title>
+              <p class="mood-description">Warm & comforting food</p>
+            </ion-card-content>
+          </ion-card>
+          
+          <ion-card class="mood-card" data-mood="energetic">
+            <ion-card-content class="mood-content">
+              <div class="mood-emoji">⚡</div>
+              <ion-card-title class="mood-title">Energetic</ion-card-title>
+              <p class="mood-description">Power-packed nutrition</p>
+            </ion-card-content>
+          </ion-card>
+          
+          <ion-card class="mood-card" data-mood="relaxed">
+            <ion-card-content class="mood-content">
+              <div class="mood-emoji">😌</div>
+              <ion-card-title class="mood-title">Relaxed</ion-card-title>
+              <p class="mood-description">Easy & peaceful dishes</p>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+
+      <!-- Dietary Filters -->
+      <div class="content-section">
+        <h3 class="section-subtitle">Dietary Preferences</h3>
+        <div class="filter-chips">
+          <ion-chip class="diet-chip" data-filter="vegetarian">
+            <ion-icon name="leaf"></ion-icon>
+            <ion-label>Vegetarian</ion-label>
+          </ion-chip>
+          <ion-chip class="diet-chip" data-filter="vegan">
+            <ion-icon name="flower"></ion-icon>
+            <ion-label>Vegan</ion-label>
+          </ion-chip>
+          <ion-chip class="diet-chip" data-filter="glutenFree">
+            <ion-icon name="medical"></ion-icon>
+            <ion-label>Gluten-Free</ion-label>
+          </ion-chip>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="content-section">
+        <div class="action-buttons">
+          <ion-button 
+            expand="block" 
+            class="primary-action-btn" 
+            id="recommendBtn" 
+            disabled>
+            <ion-icon name="restaurant" slot="start"></ion-icon>
+            Get My Meal
+          </ion-button>
+          
+          <ion-button 
+            expand="block" 
+            fill="outline" 
+            class="secondary-action-btn" 
+            id="surpriseBtn">
+            <ion-icon name="shuffle" slot="start"></ion-icon>
+            Surprise Me!
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Meal Result Card -->
+      <div class="content-section" id="resultSection" style="display: none;">
+        <ion-card class="result-card">
+          <div class="result-image-container">
+            <img id="resultImage" class="result-image" alt="Recommended Meal" />
+            <div class="meal-badges" id="mealBadges"></div>
+          </div>
+          <ion-card-header>
+            <ion-card-title id="resultTitle" class="result-title"></ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p id="resultDescription" class="result-description"></p>
+            <div class="result-actions">
+              <ion-button fill="clear" id="saveFavoriteBtn" class="action-icon-btn">
+                <ion-icon name="heart-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" id="shareBtn" class="action-icon-btn">
+                <ion-icon name="share-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" id="refreshBtn" class="action-icon-btn">
+                <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-content>
+
+    <!-- Favorites Modal -->
+    <ion-modal id="favoritesModal">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Your Favorite Meals</ion-title>
+          <ion-buttons slot="end">
+            <ion-button id="closeFavoritesBtn">
+              <ion-icon name="close" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <div id="favoritesList" class="favorites-content">
+          <div class="empty-favorites">
+            <ion-icon name="heart-outline" class="empty-icon"></ion-icon>
+            <h3>No favorites yet</h3>
+            <p>Save meals you love to see them here!</p>
+          </div>
+        </div>
+      </ion-content>
+    </ion-modal>
+
+    <!-- Search Dropdown -->
+    <div id="searchDropdown" class="search-dropdown" style="display: none;"></div>
+
+    <!-- Toast -->
+    <ion-toast id="toast"></ion-toast>
+  </ion-app>
+
+  <script src="script.js"></script>
+</body>
+</html>
